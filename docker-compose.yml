@@ -1,0 +1,72 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: notes_db
+    environment:
+      POSTGRES_USER: ${POSTGRES_DB:-notes}
+      POSTGRES_PASSWORD: ${POSTGRES_USER:-notes_user}
+      POSTGRES_DB: ${POSTGRES_PASSWORD:-notes_pass}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 30s
+  
+  api1:
+    build: ./backend
+    environment:
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+      DATABASE_USER: ${POSTGRES_USER:-notes_user}
+      DATABASE_PASSWORD: ${POSTGRES_PASSWORD:-notes_pass}
+      DATABASE_NAME: ${POSTGRES_DB:-notes}
+      JWT_SECRET: ${JWT_SECRET:-supersecret}
+      NODE_ENV: production
+    depends_on:
+      db:
+        condition: service_healthy
+    expose:
+      - "3000"
+
+  api2:
+    build: ./backend
+    environment:
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+      DATABASE_USER: ${POSTGRES_USER:-notes_user}
+      DATABASE_PASSWORD: ${POSTGRES_PASSWORD:-notes_pass}
+      DATABASE_NAME: ${POSTGRES_DB:-notes}
+      JWT_SECRET: ${JWT_SECRET:-supersecret}
+      NODE_ENV: production
+    depends_on:
+      db:
+        condition: service_healthy
+    expose:
+      - "3000"
+
+  frontend:
+    build: ./frontend
+    depends_on:
+      - api1
+      - api2
+    expose:
+      - "80"
+
+  proxy:
+    build: ./proxy
+    ports:
+      - "80:80"
+    depends_on:
+      - frontend
+      - api1
+      - api2
+
+volumes:
+  db_data:
