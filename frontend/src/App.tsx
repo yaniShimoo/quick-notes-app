@@ -7,9 +7,9 @@ export default function App() {
 
   return (
     <div style={{ maxWidth: 920, margin: '0 auto', padding: 24 }}>
-      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1 style={{paddingRight: '50px'}}>📒 Notes</h1>
-        <nav style={{ display: 'flex', gap: 12 }}>
+      <header style={{ display: 'grid', alignItems: 'center' }}>
+        <span className='logo'>📒 Notes</span>
+        <nav style={{ display: 'flex', gap: 12, justifyContent: 'center' }}>
           <Link to="/">Home</Link>
           {!logged && <Link to="/login">Login</Link>}
           {!logged && <Link to="/register">Registration</Link>}

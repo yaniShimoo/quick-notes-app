@@ -24,11 +24,11 @@ export default function Register() {
     return (
         <form onSubmit={submit} style={{ display: 'grid', gap: 12, maxWidth: 360 }}>
             <h2>Registeration</h2>
-            <input placeholder='Email' value={email} onChange={e => setEmail(e.target.value)} type="email" required />
-            <input placeholder="Password" type="password" value={password} onChange={e => setPassword(e.target.value)} />
+            <input className="email-field" placeholder='Email' value={email} onChange={e => setEmail(e.target.value)} type="email" required />
+            <input className="password-field" placeholder="Password" type="password" value={password} onChange={e => setPassword(e.target.value)} />
             {error && <p style={{ color: 'red' }}>{error}</p>}
-            <button style={{backgroundColor: "orange"}}>Sign up</button>
-            <small>Already have an account? <Link style={{color: 'orange'}} to="/login">Login</Link></small>
+            <button>Sign up</button>
+            <small>Already have an account? <Link className='route-link' to="/login">Login</Link></small>
         </form>
     );
 

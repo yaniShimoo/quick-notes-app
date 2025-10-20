@@ -24,11 +24,11 @@ export default function Login() {
     return (
         <form onSubmit={submit} style={{ display: 'grid', gap: 12, maxWidth: 360 }}>
             <h2>Login</h2>
-            <input placeholder='Email' value={email} onChange={e => setEmail(e.target.value)} type="email" required />
-            <input placeholder="Password" type="password" value={password} onChange={e => setPassword(e.target.value)} />
+            <input className='email-field' placeholder='Email' value={email} onChange={e => setEmail(e.target.value)} type="email" required />
+            <input className='password-field' placeholder="Password" type="password" value={password} onChange={e => setPassword(e.target.value)} />
             {error && <p style={{ color: 'crimson' }}>{error}</p>}
-            <button style={{backgroundColor: 'orange'}}>Sign in</button>
-            <small>Don’t have an account? <Link style={{color: 'orange'}} to="/register">Register</Link></small>
+            <button>Sign in</button>
+            <small>Don’t have an account? <Link className="route-link" to="/register">Register</Link></small>
         </form>
     );
 
